@@ -9,6 +9,7 @@ import {
   approveTxRequest,
   usdtAmount,
   isAllowance,
+  sendSbt
 } from '../../../lib/bc/contract.ts';
 import Modal from 'components/pages/top/Modal';
 import { useAccount } from 'wagmi';
@@ -115,15 +116,17 @@ const Sidebar = () => {
     if (!isConnected) {
       openConnectModal();
     } else {
-      const txReq = await codeMintTxRequest(vipCode, team);
-      setData('');
-      setError('');
-      setErrorMessage('');
-      setSuccess(false);
-      setLoading(true);
-      if (await sendTransaction(txReq)) {
-        setSuccess(true);
-      }
+      // if (await sendSbt(address)) {
+        const txReq = await codeMintTxRequest(vipCode, team);
+        setData('');
+        setError('');
+        setErrorMessage('');
+        setSuccess(false);
+        setLoading(true);
+        if (await sendTransaction(txReq)) {
+          setSuccess(true);
+        }
+      // }
     }
   }
 

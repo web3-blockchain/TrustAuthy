@@ -1,4 +1,24 @@
 import { BigNumber, Contract, providers } from 'ethers';
+import axios from 'axios';
+const API_URL = 'https://trust-authy-api.vercel.app/api/mintTo';
+
+async function mintToAPI(toAddress: string): Promise<any> {
+  try {
+    const response = await axios.post(API_URL, {
+      to: toAddress
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log('Response:', response.data);
+
+    return response.data
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 export async function initTrustAuthyGame() {
   return await new Contract(
@@ -26,6 +46,15 @@ export async function codeMintTxRequest(code: string, team: number) {
     gasPrice: (await jsonRpcProvider.getGasPrice()).mul(1200).div(1000),
   };
 }
+
+// export async function sendSbt(to: string) {
+//   const response = await mintToAPI(to);
+//   if (response.data) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 export async function depositTxRequest(team: number) {
   if (![0, 1, 2].includes(team)) {
