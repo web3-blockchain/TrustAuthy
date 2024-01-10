@@ -105,14 +105,9 @@ export async function depositUSDTTxRequest(team: number, amount: BigNumber) {
 
 const env = {
   NODE_URL:
-    process.env.NODE_URL ??
     'https://polygon-mumbai.g.alchemy.com/v2/uehH8ZLNdQP3YPMYZf4W8IxnM2PFlbwp',
-  TETHERTOKEN_CONTRACT_ADDRESS:
-    process.env.TETHERTOKEN_CONTRACT_ADDRESS ??
-    '0x201eba5cc46d216ce6dc03f6a759e8e766e956ae',
-  ERC1967PROXY_CONTRACT_ADDRESS:
-    process.env.ERC1967PROXY_CONTRACT_ADDRESS ??
-    '0xfEBaf2241D4947e5724D136E8Ba8Cfeeef9b4157',
+  TETHERTOKEN_CONTRACT_ADDRESS: '0x3813e82e6f7098b9583FC0F33a962D02018B6803',
+  ERC1967PROXY_CONTRACT_ADDRESS: '0xC455afacFe025a3BB71A6bE746F38D9c7425A337',
 };
 
 const jsonRpcProvider = new providers.JsonRpcProvider(env.NODE_URL);
