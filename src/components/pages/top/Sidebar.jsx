@@ -9,7 +9,7 @@ import {
   approveTxRequest,
   usdtAmount,
   isAllowance,
-  sendSbt
+  sendSbt,
 } from '../../../lib/bc/contract.ts';
 import Modal from 'components/pages/top/Modal';
 import { useAccount } from 'wagmi';
@@ -18,7 +18,9 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 const Sidebar = () => {
   const [selected, setSelected] = useState('werewolf');
   const [matic, setMatic] = useState(100);
-  const [imagePath, setImagePath] = useState('images/img_teambox_werewolf.jpg');
+  const [imagePath, setImagePath] = useState(
+    'https://trust-authy-api.vercel.app/metadata/gameFi-image.png'
+  );
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSuccess, setSuccess] = useState('');
@@ -44,15 +46,17 @@ const Sidebar = () => {
 
   const expiryDatetime = '2024-01-30 16:00:00';
   const teams = [
-    { id: 'werewolf', label: 'TRUST AUTHY', value: 'werewolf' },
-    { id: 'human', label: 'TRUST AUTHY', value: 'human' },
-    { id: 'vampire', label: 'TRUST AUTHY', value: 'vampire' },
+    { id: 'werewolf', label: 'TRUSTAUTHY', value: 'werewolf' },
+    { id: 'human', label: 'TRUSTAUTHY', value: 'human' },
+    { id: 'vampire', label: 'TRUSTAUTHY', value: 'vampire' },
   ];
 
   const changeTeam = (e) => {
     const team = e.target.value;
     setSelected(team);
-    setImagePath('images/img_teambox_werewolf.jpg');
+    setImagePath(
+      'https://trust-authy-api.vercel.app/metadata/gameFi-image.png'
+    );
 
     if (team === 'werewolf') {
       setTeam(0);
@@ -115,18 +119,20 @@ const Sidebar = () => {
     event.preventDefault();
     if (!isConnected) {
       openConnectModal();
-    } else {
-      // if (await sendSbt(address)) {
+    } else if (vipCode) {
+      setSuccess(false);
+      if (await sendSbt(address)) {
         const txReq = await codeMintTxRequest(vipCode, team);
         setData('');
         setError('');
         setErrorMessage('');
-        setSuccess(false);
         setLoading(true);
         if (await sendTransaction(txReq)) {
           setSuccess(true);
         }
-      // }
+      }
+    } else if (!vipCode) {
+      alert('You must enter the vipCode');
     }
   }
 
@@ -181,7 +187,7 @@ const Sidebar = () => {
               <img src={imagePath} alt="" />
             </p>
 
-            <p className="p-buy-area__display-text">TRUST AUTHY SBT</p>
+            <p className="p-buy-area__display-text">Sample GameFi NFT</p>
 
             <div className="c-list--sidebar-display">
               <ul className="c-list p-buy-area__display-list">

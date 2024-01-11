@@ -3,7 +3,7 @@ import React from 'react';
 const Reword = () => {
   const maxWidth = 768;
   const notes = [
-    'Rewards in TRUST AUTHY tokens will be awarded post-listing on a recognized exchange.',
+    'Rewards in TRUSTAUTHY tokens will be awarded post-listing on a recognized exchange.',
     'Post-game, NFTs will transform into SBTs (Soul Bond Tokens), unique tokens that are non-transferable.',
   ];
 

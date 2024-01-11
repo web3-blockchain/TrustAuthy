@@ -4,7 +4,7 @@ const Summary = () => {
   return (
     <div className="p-summary u-mt--30">
       <div className="p-summary__inner">
-        <h2 className="c-text--h2-ttl">Introducing TRUST AUTHY</h2>
+        <h2 className="c-text--h2-ttl">Introducing TRUSTAUTHY</h2>
 
         <p className="c-text u-mt--30 u-mt--20-sp">
           Embark on an innovative NFT game where your social media reactions can

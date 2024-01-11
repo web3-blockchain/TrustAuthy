@@ -9,7 +9,7 @@ const Rule = () => {
         <div className="p-rule__howto u-mt--60 u-mt--40-sp">
           <h3 className="c-text--h3-ttl">HOW TO WIN</h3>
           <p className="c-text u-mt--30 u-mt--20-sp">
-            TRUST AUTHY unfolds over four days of strategic play. On the final
+            TRUSTAUTHY unfolds over four days of strategic play. On the final
             day, the team with the least "BAN points" claims victory. <br />
             However, there's a twist – should a "reverse victory condition" be
             triggered, the rules of winning flip. Stay tuned for more details.

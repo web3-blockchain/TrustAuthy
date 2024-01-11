@@ -4,9 +4,9 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Header = () => {
   const items = [
-    { href: '#rule', text: 'Introducing' },
-    { href: '#schedule', text: 'SCHEDULE' },
-    { href: 'https://twitter.com/', text: 'X (twitter)' },
+    { href: 'https://trustauthy.jp/', text: 'TRUSTAUTHY' },
+    // { href: '#schedule', text: 'SCHEDULE' },
+    { href: 'https://twitter.com/sachiominamoto', text: 'X (twitter)' },
     // { href: '', text: 'DISCORD' },
   ];
 
@@ -32,7 +32,11 @@ const Header = () => {
   return (
     <header className="l-header">
       <div className="l-header__inner">
-        <h1 className="l-header__title">TRUST AUTHY</h1>
+        <h1 className="l-header__title">
+          <a href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            TRUSTAUTHY DEMO
+          </a>
+        </h1>
 
         <nav className="l-header__nav">
           <ul className="l-header__nav-list">
@@ -44,7 +48,7 @@ const Header = () => {
               >
                 <a
                   href={item.href}
-                  target={item.href.includes('twitter.com') ? '_blank' : ''}
+                  target={'_blank'}
                   rel={
                     item.href.includes('twitter.com')
                       ? 'noopener noreferrer'

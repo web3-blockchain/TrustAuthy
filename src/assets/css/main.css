@@ -53,6 +53,7 @@ summary {
 
 img {
   border: 0;
+  border-radius: 10px;
 }
 
 ul,
@@ -1509,7 +1510,7 @@ html.is-open .l-header__hamburger-icon:after {
 
 /*
   ----------------
-  WHAT IS TRUST AUTHY? |
+  WHAT IS TRUSTAUTHY? |
   ----------------
 */
 /*
