@@ -5,9 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 const Header = () => {
   const items = [
     { href: 'https://trustauthy.jp/', text: 'TRUSTAUTHY' },
-    // { href: '#schedule', text: 'SCHEDULE' },
     { href: 'https://twitter.com/sachiominamoto', text: 'X (twitter)' },
-    // { href: '', text: 'DISCORD' },
   ];
 
   const handleHamburgerButtonClick = (e) => {

@@ -99,7 +99,7 @@ export async function approveTxRequest(amount: BigNumber) {
 export async function depositUSDTTxRequest(team: number, amount: BigNumber) {
   if (![0, 1, 2].includes(team)) {
     throw new Error(
-      'Invalid team value. Team must be WEREWOLF, HUMAN, or VAMPIRE.'
+      'Invalid team value.'
     );
   }
   const erc721 = await initTrustAuthyGame();

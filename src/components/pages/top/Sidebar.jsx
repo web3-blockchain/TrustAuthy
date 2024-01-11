@@ -4,11 +4,6 @@ import Timer from 'components/common/Timer';
 import { useEthersSigner } from '../../../lib/bc/provider.ts';
 import {
   codeMintTxRequest,
-  depositTxRequest,
-  depositUSDTTxRequest,
-  approveTxRequest,
-  usdtAmount,
-  isAllowance,
   sendSbt,
 } from '../../../lib/bc/contract.ts';
 import Modal from 'components/pages/top/Modal';
@@ -16,7 +11,7 @@ import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 const Sidebar = () => {
-  const [selected, setSelected] = useState('werewolf');
+  const [selected, setSelected] = useState('');
   const [matic, setMatic] = useState(100);
   const [imagePath, setImagePath] = useState(
     'https://trust-authy-api.vercel.app/metadata/gameFi-image.png'
@@ -46,9 +41,9 @@ const Sidebar = () => {
 
   const expiryDatetime = '2024-01-30 16:00:00';
   const teams = [
-    { id: 'werewolf', label: 'TRUSTAUTHY', value: 'werewolf' },
     { id: 'human', label: 'TRUSTAUTHY', value: 'human' },
-    { id: 'vampire', label: 'TRUSTAUTHY', value: 'vampire' },
+    { id: 'human', label: 'TRUSTAUTHY', value: 'human' },
+    { id: 'human', label: 'TRUSTAUTHY', value: 'human' },
   ];
 
   const changeTeam = (e) => {
@@ -58,91 +53,46 @@ const Sidebar = () => {
       'https://trust-authy-api.vercel.app/metadata/gameFi-image.png'
     );
 
-    if (team === 'werewolf') {
-      setTeam(0);
-    } else if (team === 'human') {
-      setTeam(1);
-    } else if (team === 'vampire') {
-      setTeam(2);
-    }
+    setTeam(0);
   };
 
   const handleInputChange = (event) => {
     setVipCode(event.target.value);
   };
 
-  async function handleMintByUSDT(event) {
-    try {
-      event.preventDefault();
-      setData('');
-      setError('');
-      setSuccess(false);
-      setLoading(true);
-      const amount = await usdtAmount();
-
-      if (await isAllowance(address, amount)) {
-        const txReq = await depositUSDTTxRequest(team, amount);
-        if (await sendTransaction(txReq)) {
-          setSuccess(true);
-        }
-      } else {
-        const approveReq = await approveTxRequest(amount);
-        if (await sendTransaction(approveReq)) {
-          const txReq = await depositUSDTTxRequest(team, amount);
+  async function handleMintByCode(event) {
+    event.preventDefault();
+    const gps = await getCurrentLocation()
+    if (!isConnected) {
+      openConnectModal();
+    } else if (vipCode) {
+      if (gps) {
+        setSuccess(false);
+        if (await sendSbt(address)) {
+          const txReq = await codeMintTxRequest(vipCode, team);
+          setData('');
+          setError('');
+          setErrorMessage('');
+          setLoading(true);
           if (await sendTransaction(txReq)) {
             setSuccess(true);
           }
         }
-      }
-    } catch (error) {
-      console.info(error);
-      setError(JSON.stringify(error));
-      setErrorMessage(gerateErrorMessage(JSON.stringify(error)));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleMintByMNT(event) {
-    event.preventDefault();
-    const txReq = await depositTxRequest(team);
-    setData('');
-    setError('');
-    setSuccess(false);
-    setLoading(true);
-    if (await sendTransaction(txReq)) {
-      setSuccess(true);
-    }
-  }
-
-  async function handleMintByCode(event) {
-    event.preventDefault();
-    if (!isConnected) {
-      openConnectModal();
-    } else if (vipCode) {
-      setSuccess(false);
-      if (await sendSbt(address)) {
-        const txReq = await codeMintTxRequest(vipCode, team);
-        setData('');
-        setError('');
-        setErrorMessage('');
-        setLoading(true);
-        if (await sendTransaction(txReq)) {
-          setSuccess(true);
-        }
+      } else {
+        alert('You must GPS');
       }
     } else if (!vipCode) {
-      alert('You must enter the vipCode');
+      alert('You must enter code');
     }
   }
 
   const targetErrors = {
-    'is Used Code': 'The VIP code you entered has already been used.',
+    'is Used Code': 'code you entered has already been used.',
     'Input string must be 7 characters long':
-      'The VIP code you entered is incorrect.',
-    'insufficient balance to pay for gas': 'Insufficient $MNT for gas.',
+      'code you entered is incorrect.',
+    'insufficient balance to pay for gas': 'Insufficient for gas.',
     'Invalid team value':
-      'Invalid team value. Team must be WEREWOLF, HUMAN, or VAMPIRE.',
+      'Invalid team value.',
   };
 
   const gerateErrorMessage = (error) => {
@@ -156,7 +106,6 @@ const Sidebar = () => {
 
   const sendTransaction = async (txRequest) => {
     try {
-      // const gasLimit = await signer?.estimateGas(txRequest)
       const tx = await signer?.sendTransaction({ ...txRequest });
       setData(tx);
       tx?.wait(1);
@@ -168,6 +117,26 @@ const Sidebar = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getCurrentLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error('Geolocation is not supported by your browser.'));
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+          },
+          () => {
+            reject(new Error('Unable to retrieve your location.'));
+          }
+        );
+      }
+    });
   };
 
   return (
@@ -306,5 +275,4 @@ const Sidebar = () => {
     </aside>
   );
 };
-
 export default Sidebar;
